@@ -133,8 +133,10 @@ p colors.sort  # ["black", "gold", "silver", "white", "yellow"]
 
 # 9 ハッシュ
 
-# v1.9以降は、後者で書ける。以下2つは等価。
+# :xxx は、シンボル = 英語しか使えないが軽い文字列みたいなもの
 # { :hoge => 'hoge', :fuga => 'fuga'}
+
+# v1.9以降は、こう書ける。↑ と等価。
 # { hoge: 'hoge', fuga: 'fuga'}
 
 
