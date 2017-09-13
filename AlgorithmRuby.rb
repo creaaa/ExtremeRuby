@@ -139,7 +139,8 @@ class HashTable
 	end
 end
 
-
+myHash = HashTable.new()
+p myHash
 
 
 
