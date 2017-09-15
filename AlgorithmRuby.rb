@@ -142,6 +142,13 @@ end
 myHash = HashTable.new()
 p myHash
 
+# Linked List
+
+# Access: O(n)
+# Search: O(n)
+# Insert: O(1)
+# Remove: O(1)
+
 
 
 
