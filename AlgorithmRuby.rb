@@ -9,16 +9,13 @@
 
 # 原始的なリスト
 
-# class Element
-
-# 	attr_accessor :value, :next_ref
-
-# 	def initialize(value, next_ref)
-# 		@value    = value
-# 		@next_ref = next_ref
-# 	end
-
-# end
+class Element
+	attr_accessor :value, :next_ref
+	def initialize(value, next_ref)
+		@value    = value
+		@next_ref = next_ref
+	end
+end
 
 # d = Element.new(4, nil)
 # c = Element.new(3, d)
@@ -126,21 +123,72 @@ end
 # p Digest::MD5.hexdigest("bar")  # "37b51d194a7513e45b56f6524f2d51f2"
 
 
-# ハッシュテーブルの構造を定義
+# ハッシュテーブル(愚直な実装)
 class HashTable
 	BIN_SIZE = 4
 
 	def initialize
 		# '個数の指定'と'ブロック'の2つを渡すことで、配列の初期値を決定できるイニシャライザがある。
 		# Swiftなら、さしずめ Array(repeating: [], count: 4) だろうか...
-		@bins = Array.new(BIN_SIZE) do |i|
+		@bins = Array.new(BIN_SIZE) do |i|  # この i は 0から3 が来る
 			List.new  # 空の配列が4個あり、それぞれの中には空の連結リストが代入されている
 		end
 	end
+
+	def set(key, value)
+		index = key.hash % BIN_SIZE
+		bin   = @bins[index]  # 4つある連結リストのうち、どのインデックスにある連結リストを対象にするか
+		
+		# keyが既にあるかどうか調べ、あれば上書き
+		bin.each do |pair|
+			if pair[0] == key
+				pair[1] = value # binに既にkeyが一致する要素がある場合は、挿入ではなく上書き
+				return self
+			end
+		end
+
+		bin.unshift([key, value])
+		self
+	end
+
+	def get(key)
+		index = key.hash % BIN_SIZE
+		bin   = @bins[index]  # 格納されるbinを特定
+
+		bin.each do |pair|
+			if pair[0] == key
+				return pair[1]
+			end
+		end
+
+		nil
+	end
+
+	def each
+		@bins.each do |bin|
+			bin.each do |pair|
+				yield pair[0], pair[1]
+			end
+		end
+	end
+
 end
 
-myHash = HashTable.new()
-p myHash
+hash = HashTable.new
+hash.set("foo", "bar")
+hash.set("hoge", "fuga")
+
+# 値を取得
+p hash.get "foo"
+p hash.get "hoge"
+
+# イテレーション(順序は当然なし)
+hash.each do |key, value|
+	print(key, ", ", value, "\n")
+end
+
+
+# p myHash
 
 # Linked List
 
@@ -148,17 +196,3 @@ p myHash
 # Search: O(n)
 # Insert: O(1)
 # Remove: O(1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
