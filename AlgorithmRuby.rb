@@ -124,30 +124,106 @@ end
 
 
 # ハッシュテーブル(愚直な実装)
-class HashTable
+# class HashTable
+# 	BIN_SIZE = 4
+
+# 	def initialize
+# 		# '個数の指定'と'ブロック'の2つを渡すことで、配列の初期値を決定できるイニシャライザがある。
+# 		# Swiftなら、さしずめ Array(repeating: [], count: 4) だろうか...
+# 		@bins = Array.new(BIN_SIZE) do |i|  # この i は 0から3 が来る
+# 			List.new  # 空の配列が4個あり、それぞれの中には空の連結リストが代入されている
+# 		end
+# 	end
+
+# 	def set(key, value)
+# 		index = key.hash % BIN_SIZE
+# 		bin   = @bins[index]  # 4つある連結リストのうち、どのインデックスにある連結リストを対象にするか
+		
+# 		# keyが既にあるかどうか調べ、あれば上書き
+# 		bin.each do |pair|
+# 			if pair[0] == key
+# 				pair[1] = value # binに既にkeyが一致する要素がある場合は、挿入ではなく上書き
+# 				return self
+# 			end
+# 		end
+
+# 		bin.unshift([key, value])
+# 		self
+# 	end
+
+# 	def get(key)
+# 		index = key.hash % BIN_SIZE
+# 		bin   = @bins[index]  # 格納されるbinを特定
+
+# 		bin.each do |pair|
+# 			if pair[0] == key
+# 				return pair[1]
+# 			end
+# 		end
+
+# 		nil
+# 	end
+
+# 	def each
+# 		@bins.each do |bin|
+# 			bin.each do |pair|
+# 				yield pair[0], pair[1]
+# 			end
+# 		end
+# 	end
+
+# end
+
+# hash = HashTable.new
+# hash.set("foo", "bar")
+# hash.set("hoge", "fuga")
+
+# # 値を取得
+# p hash.get "foo"
+# p hash.get "hoge"
+
+# # イテレーション(順序は当然なし)
+# hash.each do |key, value|
+# 	print(key, ", ", value, "\n")
+# end
+
+
+# p myHash
+
+# Linked List
+
+# Access: O(n)
+# Search: O(n)
+# Insert: O(1)
+# Remove: O(1)
+
+# 順序付きのハッシュテーブル
+
+# ハッシュテーブルの中に「キーの連結リスト」を持つ、という実装が思いつく
+
+class OrderedHashTable
 	BIN_SIZE = 4
 
 	def initialize
-		# '個数の指定'と'ブロック'の2つを渡すことで、配列の初期値を決定できるイニシャライザがある。
-		# Swiftなら、さしずめ Array(repeating: [], count: 4) だろうか...
-		@bins = Array.new(BIN_SIZE) do |i|  # この i は 0から3 が来る
-			List.new  # 空の配列が4個あり、それぞれの中には空の連結リストが代入されている
+		@bins = Array.new(BIN_SIZE) do |i|
+			List.new
 		end
+		@keys = List.new # keyの順序を保存するためのリスト
 	end
 
 	def set(key, value)
 		index = key.hash % BIN_SIZE
-		bin   = @bins[index]  # 4つある連結リストのうち、どのインデックスにある連結リストを対象にするか
-		
-		# keyが既にあるかどうか調べ、あれば上書き
+		bin   = @bins[index]
+
 		bin.each do |pair|
 			if pair[0] == key
-				pair[1] = value # binに既にkeyが一致する要素がある場合は、挿入ではなく上書き
+				pair[1] = value
 				return self
 			end
 		end
 
 		bin.unshift([key, value])
+		@keys.unshift(key)  # keyの順序を保存する
 		self
 	end
 
@@ -165,34 +241,45 @@ class HashTable
 	end
 
 	def each
-		@bins.each do |bin|
-			bin.each do |pair|
-				yield pair[0], pair[1]
-			end
+		@keys.each do |key|
+			value = self.get(key)
+			yield key, value
 		end
 	end
-
-end
-
-hash = HashTable.new
-hash.set("foo", "bar")
-hash.set("hoge", "fuga")
-
-# 値を取得
-p hash.get "foo"
-p hash.get "hoge"
-
-# イテレーション(順序は当然なし)
-hash.each do |key, value|
-	print(key, ", ", value, "\n")
 end
 
 
-# p myHash
+myHash = OrderedHashTable.new
+myHash.set("hoge", 42)
+myHash.set("fuga", 13)
+myHash.set("pero", 68)
 
-# Linked List
+myHash.each { |k, v|
+	p k, v
+}
 
-# Access: O(n)
-# Search: O(n)
-# Insert: O(1)
-# Remove: O(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

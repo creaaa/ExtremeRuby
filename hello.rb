@@ -1,3 +1,6 @@
+
+#ドットインストール Ruby入門
+
  
 # 1 イントロ
 
@@ -137,8 +140,20 @@ p colors.sort  # ["black", "gold", "silver", "white", "yellow"]
 # { :hoge => 'hoge', :fuga => 'fuga'}
 
 # v1.9以降は、こう書ける。↑ と等価。
-# { hoge: 'hoge', fuga: 'fuga'}
+# すなわち hoge, fugaはシンボル扱い。
+# datas = { hoge: 'hoge', fuga: 'fuga'}
 
+# get / set
+# p datas[:hoge]
+# datas[:fuga] = "peropero"
+# p datas
+
+# # ハッシュのメソッド
+# p datas.size
+# p datas.keys
+# p datas.values
+# p datas.has_key? :hoge
+# p datas.has_key? :un
 
 
 # 10 オブジェクト変換
@@ -209,6 +224,51 @@ p %w(red blue)     # シングルクオート
 
 =end
 
+
+# 12 書式付きで値を埋め込む
+
+# s / string
+# d / decimal
+# f / float
+
+# p "name: %s" % "masa"     # "name: masa"
+# p "name: %10s" % "masa"   # "name:       masa"
+# p "name: %-10s" % "masa"  # "name: masa      "
+
+# p "id: %05d, rate: %10.2f" % [355, 3.284]
+
+# print("name: %10s\n" % "masa")
+
+# 13
+
+# score = gets.to_i
+
+# if score > 80 then
+# 	puts "great!"
+# elsif score > 60 then
+# 	puts "good!"
+# else
+# 	puts "soso..."
+# end
+
+# 後置if
+# puts "great!" if score > 80
+
+# 14
+
+# signal = gets.chomp
+
+# case signal
+# when "red" then
+# 	puts "stop"
+# when "green", "blue" then
+# 	puts "go"
+# when "yellow" then
+# 	puts "caution"
+# else  # defaultじゃないんか。。。。
+# 	puts "wrong signal"
+# end
+
 # 15 while, times
 
 # i = 0
@@ -256,6 +316,21 @@ p %w(red blue)     # シングルクオート
 # もちろん、中身が1行なので、こうも書ける
 # (15..20).each { |i| puts i }
 
+# 17
+
+# i = 0
+# loop do
+# 	p i
+# 	i += 1
+# end
+
+# 10.times do |i|
+# 	if i == 7
+# 		# break
+# 		next
+# 	end
+# 	p i 
+# end
 
 # 18  メソッド
 
