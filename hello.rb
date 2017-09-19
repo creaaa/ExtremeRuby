@@ -295,30 +295,30 @@ p sayHi         # Hello, tom!
 # 19 クラス定義
 
 # 必ず大文字から始めないとダメ、コンパイルエラー。
-class User
+# class User
 
-	# .new時に呼ばれる特殊なメソッド
-	def initialize(name)
-		# インスタンス変数は @ で始まるルール
-		@name = name
-	end
+# 	# .new時に呼ばれる特殊なメソッド
+# 	def initialize(name)
+# 		# インスタンス変数は @ で始まるルール
+# 		@name = name
+# 	end
 
-	def sayHi
-		puts "Hi! I am #{@name}"
-	end
+# 	def sayHi
+# 		puts "Hi! I am #{@name}"
+# 	end
 
-end
+# end
 
-# インスタンス生成
-tom = User.new("Tom")
-tom.sayHi
+# # インスタンス生成
+# tom = User.new("Tom")
+# tom.sayHi
 
-bob = User.new("Bob")
-bob.sayHi
+# bob = User.new("Bob")
+# bob.sayHi
 
-# 話がそれるが、オブジェクトが持つすべてのインスタンスメソッドをみたいならこう
-# print User.instance_methods  # 親や祖先が持つメソッドまで含む
-print User.instance_methods false  # 親や祖先が持つメソッドは除く
+# # 話がそれるが、オブジェクトが持つすべてのインスタンスメソッドをみたいならこう
+# # print User.instance_methods  # 親や祖先が持つメソッドまで含む
+# print User.instance_methods false  # 親や祖先が持つメソッドは除く
 
 # じゃ、インスタンス変数を直接取得したかったらどうなるの?
 # puts tom.@name  # これはエラー
