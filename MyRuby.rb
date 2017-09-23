@@ -43,9 +43,20 @@ p myHoge.getU
 # なお、「グローバル変数($xxx)も、最初からすべての名前の変数があらかじめ定義されている」扱いとなる。
 p $enopyon  # nil
 
+###
 
+p1 = Proc.new{|val| val.upcase}
+p2 = :upcase.to_proc
 
+p p1 == p2     # 同値ではなく...
+p p1.eql?(p2)  # 当然同一でもない(別オブジェクト)が...
 
+# 結果は結果的に同じになる
+p p1.call("hi")
+p p2.call("hi")
+
+people = %w(Alice Bob Carol)
+p people.map(&:upcase)
 
 
 
