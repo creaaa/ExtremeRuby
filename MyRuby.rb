@@ -2,6 +2,7 @@
 class Hoge
 
 	# これでインスタンス変数の定義はできない。
+	# 正しくは、これ、「クラスインスタンス変数」の定義となる。(P470 見ろ)
 	# @unko = 42
 
 	# するには、アクセサ設定 (+ initializerで初期値設定) するのが常道。
@@ -57,6 +58,39 @@ p p2.call("hi")
 
 people = %w(Alice Bob Carol)
 p people.map(&:upcase)
+
+p Object.ancestors
+
+
+##
+
+class Pero
+	def instance_pero
+		p "instance pero"
+
+		Pero.class_pero
+
+	end
+
+	def self.class_pero
+		p "class pero"
+	end
+end
+
+Pero.new.instance_pero
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
