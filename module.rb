@@ -2,6 +2,7 @@
 # モジュール、include, extend
 
 require "pp"
+require "Time"
 
 
 ##############################################
@@ -155,18 +156,18 @@ require "pp"
 
 # [A. クラス定義に書く場合]
 
-module MyModule
-	def instance_method
-		:instance_method
-	end
+# module MyModule
+# 	def zikken_method
+# 		:instance_method
+# 	end
 
-	def self.class_method
-		:class_method
-	end
-end
+# 	def self.class_method
+# 		:class_method
+# 	end
+# end
 
 # 1. 【インスタンス変数】に【include】した場合、モジュールの【インスタンスメソッド】が加わる
-# (定義場所は クラスオブジェクト)
+# (定義場所は "オブジェクト"であり、"クラスオブジェクトと親クラスの中間地点" でもある(↓参照))
 
 # class MyClass
 # 	include MyModule
@@ -174,6 +175,13 @@ end
 # myClass = MyClass.new
 
 # p myClass.instance_method  # :instance_method
+
+# pp myClass.public_methods        # あった
+# pp myClass.public_methods false  # ない
+
+# →　この理由は、メソッドが、PRのいう「モジュールをラップした透明なクラス」に設定されており、
+# それは "オブジェクトのクラス"と"その親クラス" の中間地点にあるため
+
 
 # 2. 【クラスオブジェクト】に【extend】した場合、モジュールの【インスタンスメソッド】が<クラスメソッドとして>加わる
 # (定義場所は クラスオブジェクトの特異クラス(=メタクラス))
@@ -189,8 +197,8 @@ end
 # 3. 【インスタンス変数】に【extend】した場合、モジュールの【インスタンスメソッド】が加わる
 # (定義場所は オブジェクトの特異クラス)
 
-class MyClass
-end
+# class MyClass
+# end
 
 # myClass = MyClass.new
 # myClass.extend MyModule
@@ -226,7 +234,6 @@ end
 # 以上の4パターンからわかるように、モジュールに定義されたクラスメソッド(self.xxx)を加える手段は基本的にない。
 # これは単に、Module名.xxx とすれば即効呼び出せたりするので、基本的に問題はない、と思われる。
 
-
 ##############################################
 # モジュール関数
 ##############################################
@@ -234,7 +241,7 @@ end
 # Math.sqrt 4  # 2.0
 
 # include Math
-# p sqrt 4       # 2.0
+# p sqrt 4     # 2.0
 
 # 自分自身のクラス(Object)と親クラス(BasicObject)の間に Math が入っている。
 # つまり、main#include といえど、他の includeの挙動と同じってことがわかる。
@@ -257,6 +264,9 @@ end
 	# [#<Class:#<Object:0x007fe1e18d64c0>>, Object, Math, PP::ObjectMixin, Kernel, BasicObject]
 
 
+#######################
+# main に 関数を追加する
+#######################
 
 # case.1) mainにインスタンスメソッドを追加
 
@@ -281,9 +291,9 @@ end
 
 # case.2) mainにクラスメソッドを追加(実験)
 
-def self.main_class_method
-	"mainなクラスメソッド"
-end
+# def self.main_class_method
+# 	"mainなクラスメソッド"
+# end
 
 # クラスメソッドとして追加してるつもりが、これで呼べてしまう
 # p main_class_method
@@ -303,6 +313,23 @@ end
 
 
 # てことで、馬鹿な実験はやめ、素直に def Object.xxx しましょう。
+
+# p "hello".to_sym
+
+
+#######
+# クソバマリ
+#######
+
+# Rubyリファレンスの、各クラス目次の「特異メソッド」って、これ、「クラスメソッド」のことだから注意。
+# たとえば、 Time.now の場合、
+
+# pp Time.methods false # あれ、あった
+# pp Hash.methods false  # あった、でもリファレンスにはある new は出力されない、private_methodsでもだめ。なぜ
+# pp Regexp.methods false # あった
+# pp String.methods false # あった
+
+
 
 
 
