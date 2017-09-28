@@ -322,7 +322,6 @@ require "Time"
 #######
 
 # Rubyリファレンスの、各クラス目次の「特異メソッド」って、これ、「クラスメソッド」のことだから注意。
-# たとえば、 Time.now の場合、
 
 # pp Time.methods false # あれ、あった
 # pp Hash.methods false  # あった、でもリファレンスにはある new は出力されない、private_methodsでもだめ。なぜ
@@ -330,7 +329,34 @@ require "Time"
 # pp String.methods false # あった
 
 
+greeting = "hello"
 
+# 特異メソッドを追加すると...
+def greeting.oppo
+	:bye
+end
+
+greeting.public_methods false   # [oppo] 
+
+# え、なんで特異クラスじゃなくてオブジェクトに直接付くの。。。
+# → そう見えてるだけ。
+# 定義されている場所は、"オブジェクト"に見えるが、正確には「オブジェクトの特異クラス」。
+# xxx_methods false の出力対象は、「オブジェクトの特異クラス」「オブジェクトのクラス」まで含むので、
+# 「オブジェクトの特異クラス」に定義されている oppo も入る、ってだけ。
+
+# 次の謎
+
+# p greeting.singleton_class.methods false  # [:try_convert]
+# ↑ の結果と、↓の結果が一致する理由、ちゃんとわかってる??
+# String.methods false # [:try_convert]  # こっちはカンタン
+
+# falseを渡すと、singleton_methods(false) と同じ挙動、つまりそのオブジェクトの特異メソッドだけを返す
+# これは、自分の特異クラスへ辿り、そこの特異メソッドを「フェッチしてくる」イメージに近い。
+# [greetingの特異クラス・オブジェクト]から見て、自分の特異メソッドが定義される場所とは、
+# [greetingの特異クラス・オブジェクト]の親クラスのオブジェクトの特異クラス = Stringのメタクラス。
+
+p greeting.methods false                  # [:oppo]
+p greeting.singleton_class.methods false  # [:try_convert]
 
 
 
