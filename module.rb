@@ -222,7 +222,8 @@ require "Time"
 
 # 【B. extend】
 
-# 2. 【クラスオブジェクト】に【クラス定義でextend】した場合、モジュールの【インスタンスメソッド】が<クラスメソッドとして>加わる(P.252)
+# 2. 【クラスオブジェクト】に【クラス定義でextend】した場合、
+# モジュールの【インスタンスメソッド】が<クラスメソッドとして>加わる(P.252)
 # 3. 【インスタンス変数】  に【obj#extend】した場合、モジュールの【インスタンスメソッド】が加わる (P.251・495)
 # 4. 【クラスオブジェクト】に【obj#extend】した場合、モジュールの【インスタンスメソッド】が加わる (なし)
 
@@ -355,8 +356,79 @@ greeting.public_methods false   # [oppo]
 # [greetingの特異クラス・オブジェクト]から見て、自分の特異メソッドが定義される場所とは、
 # [greetingの特異クラス・オブジェクト]の親クラスのオブジェクトの特異クラス = Stringのメタクラス。
 
-p greeting.methods false                  # [:oppo]
-p greeting.singleton_class.methods false  # [:try_convert]
+# p greeting.methods false                  # [:oppo]
+
+# pp greeting.public_methods false
+
+#p greeting.singleton_class.methods false  # [:try_convert]
+
+
+class String 
+	# こっちはStringクラスに定義されるのはわかりやすい
+	def bye
+		"Bye..."
+	end
+	# でもこうして並べると、こっちはClass型のクラスオブジェクト(String)に紐づくってわかると思う
+	# Classオブジェクトに紐づく特異メソッドがクラスメソッドであり、
+	# クラスメソッドが定義される場所 = Classオブジェクトの特異クラス = メタクラス
+	def self.bye
+		"Class Bye..."
+	end
+end
+
+# クラスメソッドとは "Class型オブジェクトの特異メソッド"なので、クラス定義外でも書ける。
+# これは既に同名の特異メソッドが定義されているので、 "上書き"となる
+def String.bye
+	"another class bye..."
+end
+
+
+# こうして並べると、クラスメソッドの呼び出しも 単なるふつうの インスタンスメソッドに見えてくるはず...
+"Hello".bye
+String.bye   # "another class bye..."  Stringは実際のところ、他と全く同じ "ただのClassクラスのインスタンス"
+
+AnotherString = String
+AnotherString.bye    # "another class bye..."
+
+# p String.methods false
+AnotherString.public_methods false
+
+
+# 実は特異クラスは、オブジェクトのクラスのサブクラスとなっています。
+
+"hello".singleton_class.class       # Class
+"hello".singleton_class.superclass  # String
+
+# メタクラス(クラスオブジェクトの特異クラス)
+p String.singleton_class.class       # Class メタクラスといえども、型はClassなんだね
+p String.singleton_class.superclass  # #<Class:Object> Objectクラスの特異クラス(型は相変わらず Class)
+
+p String.ancestors  # 親は Objectクラス
+p String.class  # Class
+p String.class.superclass
+
+
+
+# 特異クラスを参照渡ししたらどうなるか
+
+p "unko"
+
+# 特異クラスの親子関係は独特だ。
+
+# 独自クラスの特異クラスの継承関係は、こう
+# p String.singleton_class.ancestors
+# <Class:String>, #<Class:Object>, #<Class:BasicObject>, Class, Module, Object,
+# PP::ObjectMixin, Kernel, BasicObject]
+
+# Classクラスの特異クラスの継承関係は、こう
+# p Class.singleton_class.ancestors
+# <Class:Class>, #<Class:Module>, #<Class:Object>, #<Class:BasicObject>, Class, Module, Object,
+# PP::ObjectMixin, Kernel, BasicObject]
+
+# そして、すべての始祖、BasicObjectの特異クラスだってこのとおり。
+# BasicObject.singleton_class.ancestors  # [#<Class:BasicObject>, Class, Module, Object,
+# PP::ObjectMixin, Kernel, BasicObject]
+
 
 
 
