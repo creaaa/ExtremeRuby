@@ -400,18 +400,12 @@ AnotherString.public_methods false
 "hello".singleton_class.superclass  # String
 
 # メタクラス(クラスオブジェクトの特異クラス)
-p String.singleton_class.class       # Class メタクラスといえども、型はClassなんだね
-p String.singleton_class.superclass  # #<Class:Object> Objectクラスの特異クラス(型は相変わらず Class)
+String.singleton_class.class       # Class メタクラスといえども、型はClassなんだね
+String.singleton_class.superclass  # #<Class:Object> Objectクラスの特異クラス(型は相変わらず Class)
 
-p String.ancestors  # 親は Objectクラス
-p String.class  # Class
-p String.class.superclass
-
-
-
-# 特異クラスを参照渡ししたらどうなるか
-
-p "unko"
+String.ancestors  # 親は Objectクラス
+String.class  # Class
+String.class.superclass
 
 # 特異クラスの親子関係は独特だ。
 
@@ -428,6 +422,39 @@ p "unko"
 # そして、すべての始祖、BasicObjectの特異クラスだってこのとおり。
 # BasicObject.singleton_class.ancestors  # [#<Class:BasicObject>, Class, Module, Object,
 # PP::ObjectMixin, Kernel, BasicObject]
+
+
+def philonos
+	:philonos
+end
+
+p self.private_methods false # あった
+# pp self.singleton_class.private_methods  # あった
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
