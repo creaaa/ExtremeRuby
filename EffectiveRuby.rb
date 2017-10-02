@@ -60,7 +60,7 @@ require "csv"
 # 	end
 # end
 
-# 構造体のメソッド定義　やってみた
+# 構造体のメソッド定義 やってみた
 
 Yuffy = Struct.new(:cutiness) {
 	def hello

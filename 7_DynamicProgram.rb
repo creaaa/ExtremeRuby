@@ -3,7 +3,6 @@ eval "1+1"  # 2
 
 # P.553  Bindingオブジェクト
 
-
 # これらはnilになるが...
 # p eval "@instance_val"
 # p eval "local_val"
@@ -153,15 +152,14 @@ t1.instance_eval {
 
 # p t3.instance_val  # CONST
 
-
-class EvalTarget
+class FinalTarget
   CONST_VAL = "EvalTarget::CONST"
   attr_accessor :instance_val
 end
 
 CONST_VAL = "CONST"
 
-e11 = EvalTarget.new
+e11 = FinalTarget.new
 
 # evalのブロック内でCONST_VALを参照してもEvalTarget::CONST_VALが参照されてしまう
 e11.instance_eval { @instance_val = CONST_VAL }
@@ -170,16 +168,6 @@ p e11.instance_val  # CONST おかしい！！！！！！！！！！！！！�
 # CONST_VALをinstance_execの引数で渡すと、このコンテキストのCONST_VALを渡せる
 e11.instance_exec(CONST_VAL) {|const_val| @instance_val = const_val }
 p e11.instance_val #=> "CONST”
-
-
-
-
-
-
-
-
-
-
 
 
 

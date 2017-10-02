@@ -275,8 +275,7 @@ foo #=> 1
 lambda { return 1 }.call  #=> 1 
 
 
-
-
+p :hoge
 
 
 
