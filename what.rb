@@ -7,3 +7,4 @@ require "what_methods"
 # 2.what? 8
 
 #{ }"hello".what? "hellohello", 2
+

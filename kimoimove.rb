@@ -21,3 +21,6 @@ class Sample
 end
 
 Sample.new.sampleMethod
+
+
+
