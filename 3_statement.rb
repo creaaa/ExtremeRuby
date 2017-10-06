@@ -24,7 +24,7 @@ else
 end
 
 p result
-p value  # それどころか、ここからも見える。
+p value  # それどころか、ここからも見える
 
 
 
